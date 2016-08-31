@@ -4,10 +4,11 @@ appModule.controller('MainCtrl', ['socketService', '$scope', '$interval', functi
     $scope.title = 'Welcome to the Twitter Sentiment Analysis Demo!';
 
     $scope.connected = false;
+    $scope.tweets = [];
 
-    socketService.addListener(function(status) {
-        $scope.status = status;
-        $scope.connected = status.status != 'error';
+    socketService.addListener(function(tweet) {
+        $scope.tweets.push(tweet);
+        $scope.connected = true;
 
         $scope.$apply();
     });

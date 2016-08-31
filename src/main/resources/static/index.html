@@ -31,20 +31,12 @@
                     <span ng-if="connected" class="glyphicon glyphicon-thumbs-up connect-ok" aria-hidden="true"></span>
                     <span ng-if="!connected" class="glyphicon glyphicon-thumbs-down connect-nok" aria-hidden="true"></span>
                 </div>
-                <div class="col-md-2">Status: {{status.status}}</div>
-                <div class="col-md-9">
-                    <span ng-show="connected">
-                        <button class="btn btn-success" ng-click="start()" ng-disabled="status.status == 'RUNNING'">Start</button>
-                    </span>
-                </div>
             </div>
-            <div class="row">
+            <div ng-repeat="tweet in tweets | orderBy:'-'" class="row">
                 <div class="col-md-12">
-                    <graph></graph>
-                    <histogram></histogram>
+                    <tweet tweet="tweet"></tweet>
                 </div>
             </div>
         </div>
-    <div>{{status.time}}</div>
     </body>
 </html>
