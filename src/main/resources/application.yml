@@ -1,0 +1,6 @@
+server:
+  port: 8080
+twitter:
+  filter: java
+  language: en
+
