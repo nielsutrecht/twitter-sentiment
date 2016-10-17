@@ -1,4 +1,4 @@
-package com.nibado.example.twisent;
+package com.nibado.example.twisent.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

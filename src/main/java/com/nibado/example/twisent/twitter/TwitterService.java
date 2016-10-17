@@ -1,6 +1,8 @@
 package com.nibado.example.twisent.twitter;
 
-import com.nibado.example.twisent.WebSocketController;
+import com.nibado.example.twisent.controller.TweetDTO;
+import com.nibado.example.twisent.sentiment.AnalyserService;
+import com.nibado.example.twisent.sentiment.Score;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,12 @@ public class TwitterService {
 
     @Value("${twitter.filter}")
     private String filter;
+
     @Autowired
     private SimpMessagingTemplate broker;
+
+    @Autowired
+    private AnalyserService analyser;
 
     public void start() {
         LOG.info("Filtering messages with language {} and filter {}", language, filter);
@@ -31,8 +37,13 @@ public class TwitterService {
     }
 
     public void updateStatus(Status status) {
-        LOG.debug("Message from {}: {}", status.getUser().getName(), status.getText());
-        broker.convertAndSend("/topic/status", new WebSocketController.Update(status.getText(), status.getUser().getProfileImageURL()));
+        Score score = analyser.analyse(status);
+
+        LOG.debug("Message from {}: {} with score {}", status.getUser().getName(), status.getText(), score.getScore());
+
+        TweetDTO tweet = new TweetDTO(status.getText(), status.getUser().getProfileImageURL(), score.getScore());
+
+        broker.convertAndSend("/topic/status", tweet);
     }
 
     private class Listener implements StatusListener {
