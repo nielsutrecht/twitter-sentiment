@@ -31,6 +31,15 @@
                     <span ng-if="connected" class="glyphicon glyphicon-thumbs-up connect-ok" aria-hidden="true"></span>
                     <span ng-if="!connected" class="glyphicon glyphicon-thumbs-down connect-nok" aria-hidden="true"></span>
                 </div>
+                <div class="col-md-2">
+                    Positive: {{positive}}
+                </div>
+                <div class="col-md-2">
+                    Negative: {{negative}}
+                </div>
+                <div class="col-md-2">
+                    Neutral: {{neutral}}
+                </div>
             </div>
             <div ng-repeat="tweet in tweets | orderBy:'-'" class="row">
                 <div class="col-md-12">

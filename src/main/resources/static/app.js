@@ -5,10 +5,39 @@ appModule.controller('MainCtrl', ['socketService', '$scope', '$interval', functi
 
     $scope.connected = false;
     $scope.tweets = [];
+    $scope.neutral = 0;
+    $scope.positive = 0;
+    $scope.negative = 0;
+
+    $scope.sum = function() {
+        return $scope.neutral + $scope.positive + $scope.negative;
+    }
 
     socketService.addListener(function(tweet) {
-        $scope.tweets.push(tweet);
         $scope.connected = true;
+
+        if(!("text" in tweet) || tweet.text === 'Connected') {
+            return;
+        }
+
+        if(tweet.score < 0) {
+            tweet.sentiment = 'negative';
+            $scope.negative++;
+        }
+        else if(tweet.score > 0) {
+            tweet.sentiment = 'positive';
+            $scope.positive++;
+        }
+        else {
+            tweet.sentiment = 'neutral';
+            $scope.neutral++;
+        }
+
+        $scope.tweets.push(tweet);
+
+        if($scope.tweets.length > 100) {
+            $scope.tweets.splice(0, $scope.tweets.length - 100);
+        }
 
         $scope.$apply();
     });
