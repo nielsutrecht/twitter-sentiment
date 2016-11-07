@@ -37,6 +37,9 @@ public class TwitterService {
     }
 
     public void updateStatus(Status status) {
+        if(status.isRetweet()) {
+            return;
+        }
         Score score = analyser.analyse(status);
 
         LOG.debug("Message from {}: {} with score {}", status.getUser().getName(), status.getText(), score.getScore());
